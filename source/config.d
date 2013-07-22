@@ -1,9 +1,8 @@
-import vibe.d;
+import vibe.db.mongo.mongo;
 import vibe.crypto.passwordhash;
 
 import admin;
 
-MongoDB db;
 MongoCollection configs;
 
 struct Config {
@@ -40,6 +39,6 @@ void getConfig(ref Config cfg, string name = "default")
 
 static this()
 {
-	db = connectMongoDB("localhost");
-	configs = db["vibedist.configs"];
+	auto db = connectMongoDB("localhost").getDatabase("vibedist");
+	configs = db["configs"];
 }

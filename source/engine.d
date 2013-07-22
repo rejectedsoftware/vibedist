@@ -5,10 +5,10 @@ version(Posix)
 	import core.sys.posix.signal;
 }
 
-class Node : IHttpServerRequestHandler {
+class Node : HTTPServerRequestHandler {
 	string address;
 	ushort port;
-	HttpServerRequestDelegate requestHandler;
+	HTTPServerRequestDelegate requestHandler;
 	int pendingRequests = 0;
 	int pid;
 	bool active = true;
@@ -22,7 +22,7 @@ class Node : IHttpServerRequestHandler {
 		requestHandler = reverseProxyRequest(address, port);
 	}
 
-	void handleRequest(HttpServerRequest req, HttpServerResponse res)
+	void handleRequest(HTTPServerRequest req, HTTPServerResponse res)
 	{
 		pendingRequests++;
 		scope(exit) pendingRequests--;
@@ -39,12 +39,12 @@ class Node : IHttpServerRequestHandler {
 	}
 }
 
-class PublicInterface : IHttpServerRequestHandler {
-	HttpServerSettings settings;
+class PublicInterface : HTTPServerRequestHandler {
+	HTTPServerSettings settings;
 	string path;
 	Node[] nodes;
 
-	void handleRequest(HttpServerRequest req, HttpServerResponse res)
+	void handleRequest(HTTPServerRequest req, HTTPServerResponse res)
 	{
 		nodes[0].handleRequest(req, res);
 	}

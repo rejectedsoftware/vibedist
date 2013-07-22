@@ -15,7 +15,7 @@ block body
 			tr
 				td= intf.settings.hostName
 				td= intf.settings.port
-				td= intf.settings.sslKeyFile.length > 0 ? "yes" : "no"
+				td= intf.settings.sslContext ? "yes" : "no"
 				td
 					form(action="/start_node", method="POST")
 						input(type="hidden", name="path", value="#{intf.path}")

@@ -5,12 +5,12 @@ import admin;
 import config;
 import engine;
 
-void apiIndex(HttpServerRequest req, HttpServerResponse res)
+void apiIndex(HTTPServerRequest req, HTTPServerResponse res)
 {
 	res.writeJsonBody(["message": "This is the VibeDist API."]);
 }
 
-void registerNode(HttpServerRequest req, HttpServerResponse res)
+void registerNode(HTTPServerRequest req, HTTPServerResponse res)
 {
 	Config cfg;
 	getConfig(cfg);
@@ -24,9 +24,11 @@ void registerNode(HttpServerRequest req, HttpServerResponse res)
 	string ssl_key = jreq.sslKeyFile.get!string;
 	int pid = jreq.pid.get!int;
 
+	SSLContext ssl_context; // TODO: add proper support
+
 	foreach( intf; g_interfaces ){
 		auto s = intf.settings;
-		if( s.hostName != hostname || s.port != port || s.sslCertFile != ssl_cert || s.sslKeyFile != ssl_key )
+		if (s.hostName != hostname || s.port != port || s.sslContext !is ssl_context)
 			continue;
 
 		foreach( n; intf.nodes ){
@@ -38,18 +40,17 @@ void registerNode(HttpServerRequest req, HttpServerResponse res)
 		return;
 	}
 
-	auto settings = new HttpServerSettings;
+	auto settings = new HTTPServerSettings;
 	settings.hostName = hostname;
 	settings.port = port;
 	settings.bindAddresses = cfg.publicInterfaces;
-	settings.sslKeyFile = ssl_key;
-	settings.sslCertFile = ssl_cert;
+	settings.sslContext = ssl_context;
 
 	auto intf = new PublicInterface;
 	intf.settings = settings;
 	intf.nodes ~= new Node(local_address, local_port, pid);
 
-	listenHttp(settings, intf);
+	listenHTTP(settings, intf);
 	g_interfaces ~= intf;
 
 	res.writeJsonBody(["message": "Successfully registered."]);
@@ -70,30 +71,30 @@ static this()
 	getConfig(cfg);
 
 	{ // setup node interface
-		auto settings = new HttpServerSettings;
+		auto settings = new HTTPServerSettings;
 		settings.bindAddresses = cfg.nodeInterfaces;
 		settings.port = cfg.nodePort;
 
-		auto router = new UrlRouter;
+		auto router = new URLRouter;
 		router.get("/", &apiIndex);
 		router.post("/register", &registerNode);
 
-		listenHttp(settings, router);
+		listenHTTP(settings, router);
 	}
 
 	{ // setup admin interface
-		auto settings = new HttpServerSettings;
+		auto settings = new HTTPServerSettings;
 		settings.bindAddresses = [cfg.adminInterface];
 		settings.port = cfg.adminPort;
 		//settings.sslCertFile = "admin.crt";
 		//settings.sslKeyFile = "admin.key";
 
-		auto router = new UrlRouter;
+		auto router = new URLRouter;
 		router.get("*", performBasicAuth("VibeDist Admin Interface", toDelegate(&testPassword)));
 		router.get("/", &showAdminHome);
 		router.post("/restart_node", &reloadNode);
 		router.post("/start_node", &startNode);
 
-		listenHttp(settings, router);
+		listenHTTP(settings, router);
 	}
 }

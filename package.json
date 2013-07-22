@@ -1,16 +1,10 @@
 {
     "name": "vibedist",
 	"description": "Load-balancer and virtual host manager for vibe.d",
-	"homepage": "https://github.com/rejectedsoftware/vibedist",
-    "authors": [
-		"Sönke Ludwig"
-	],
-    "version": "0.0.1",
+	"copyright": "Copyright © 2012-2013 rejectedsoftware e.K.",
+	"license": "MIT",
+    "authors": ["Sönke Ludwig"],
     "dependencies": {
-    },
-	"repository": {
-		"kind": "github",
-		"owner": "rejectedsoftware",
-		"project": "vibedist"
-	}
+    	"vibe-d": "~master"
+    }
 }
