@@ -1,7 +1,16 @@
+/**
+	Provides abstract database access.
+
+	Copyright: © 2012-2013 RejectedSoftware e.K.
+	License: Subject to the terms of the MIT license, as written in the included LICENSE.txt file.
+	Authors: Sönke Ludwig
+*/
+module vibedist.controller;
+
 import vibe.db.mongo.mongo;
 import vibe.crypto.passwordhash;
 
-import admin;
+import vibedist.admin;
 
 MongoCollection configs;
 

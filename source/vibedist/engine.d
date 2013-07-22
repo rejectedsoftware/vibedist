@@ -1,4 +1,14 @@
-import vibe.d;
+/**
+	Classes for controlling the child processes.
+
+	Copyright: © 2012-2013 RejectedSoftware e.K.
+	License: Subject to the terms of the MIT license, as written in the included LICENSE.txt file.
+	Authors: Sönke Ludwig
+*/
+module vibedist.engine;
+
+import vibe.http.proxy;
+import vibe.http.server;
 
 version(Posix)
 {

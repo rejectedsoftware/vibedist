@@ -1,7 +1,14 @@
-module admin;
+/**
+	Provides a web based administration interface.
 
-import config;
-import engine;
+	Copyright: © 2012-2013 RejectedSoftware e.K.
+	License: Subject to the terms of the MIT license, as written in the included LICENSE.txt file.
+	Authors: Sönke Ludwig
+*/
+module vibedist.admin;
+
+import vibedist.controller;
+import vibedist.engine;
 
 import std.exception;
 import std.file;

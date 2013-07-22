@@ -1,9 +1,18 @@
+/**
+	Contains the application entry point.
+
+	Copyright: © 2012-2013 RejectedSoftware e.K.
+	License: Subject to the terms of the MIT license, as written in the included LICENSE.txt file.
+	Authors: Sönke Ludwig
+*/
+module app;
+
 import vibe.d;
 import vibe.crypto.passwordhash;
 
-import admin;
-import config;
-import engine;
+import vibedist.admin;
+import vibedist.controller;
+import vibedist.engine;
 
 void apiIndex(HTTPServerRequest req, HTTPServerResponse res)
 {
