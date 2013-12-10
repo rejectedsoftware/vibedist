@@ -22,12 +22,21 @@ interface VibeDistNodeAPI {
 
 class VibeDistNodeAPIImpl : VibeDistNodeAPI
 {
+	private {
+		VibeDistController m_ctrl;
+	}
+	
+	this(VibeDistController ctrl)
+	{
+		m_ctrl = ctrl;
+	}
+
 	@path("/") string getInfo() { return "This is the VibeDist API."; }
 
 	void register(string host_name, ushort port, string local_address, ushort local_port, string ssl_settings, int pid)
 	{
 		Config cfg;
-		getConfig(cfg);
+		m_ctrl.getConfig(cfg);
 
 		SSLContext ssl_context; // TODO: add proper support
 

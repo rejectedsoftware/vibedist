@@ -24,16 +24,20 @@ import vibe.inet.path;
 
 private AdminWebInterface s_interface;
 
-void startAdminWebInterface()
+void startAdminWebInterface(VibeDistController ctrl)
 {
-	s_interface = new AdminWebInterface;
+	s_interface = new AdminWebInterface(ctrl);
 }
 
 class AdminWebInterface {
-	this()
+	private {
+		VibeDistController m_ctrl;
+	}
+
+	this(VibeDistController ctrl)
 	{
 		Config config;
-		getConfig(config);
+		ctrl.getConfig(config);
 
 		// setup admin interface
 		auto settings = new HTTPServerSettings;
@@ -54,7 +58,7 @@ class AdminWebInterface {
 	void showAdminHome(HTTPServerRequest req, HTTPServerResponse res)
 	{
 		Config config;
-		getConfig(config);
+		m_ctrl.getConfig(config);
 
 		res.renderCompat!("home.dt",
 			HTTPServerRequest, "req",
@@ -86,14 +90,13 @@ class AdminWebInterface {
 	{
 
 	}
-}
 
-private bool testPassword(string username, string password)
-{
-	if( username != "root" ) return false;
-	Config cfg;
-	getConfig(cfg);
-	auto pwhash = cfg.rootPasswordHash;
-	return testSimplePasswordHash(pwhash, password);
+	private bool testPassword(string username, string password)
+	{
+		if( username != "root" ) return false;
+		Config cfg;
+		m_ctrl.getConfig(cfg);
+		auto pwhash = cfg.rootPasswordHash;
+		return testSimplePasswordHash(pwhash, password);
+	}
 }
-

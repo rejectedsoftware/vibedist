@@ -15,10 +15,11 @@ import vibedist.controller;
 import vibedist.rest;
 
 
-static this()
+shared static this()
 {
+	auto ctrl = new VibeDistController;
 	Config cfg;
-	getConfig(cfg);
+	ctrl.getConfig(cfg);
 
 	{ // setup node interface
 		auto settings = new HTTPServerSettings;
@@ -26,10 +27,10 @@ static this()
 		settings.port = cfg.nodePort;
 
 		auto router = new URLRouter;
-		registerRestInterface(router, new VibeDistNodeAPIImpl);
+		registerRestInterface(router, new VibeDistNodeAPIImpl(ctrl));
 
 		listenHTTP(settings, router);
 	}
 
-	startAdminWebInterface();
+	startAdminWebInterface(ctrl);
 }
