@@ -1,10 +1,11 @@
 {
-    "name": "vibedist",
+	"name": "vibedist",
 	"description": "Load-balancer and virtual host manager for vibe.d",
 	"copyright": "Copyright © 2012-2013 rejectedsoftware e.K.",
 	"license": "MIT",
-    "authors": ["Sönke Ludwig"],
-    "dependencies": {
-    	"vibe-d": "~master"
-    }
+	"authors": ["Sönke Ludwig"],
+	"dependencies": {
+		"vibe-d": "~master"
+	},
+	"versions": ["VibeDefaultMain"]
 }
