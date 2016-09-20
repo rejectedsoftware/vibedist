@@ -60,11 +60,9 @@ class AdminWebInterface {
 		Config config;
 		m_ctrl.getConfig(config);
 
-		res.renderCompat!("home.dt",
-			HTTPServerRequest, "req",
-			Config*, "config",
-			PublicInterface[], "interfaces")
-			(req, &config, g_interfaces);
+		auto interfaces = g_interfaces;
+
+		res.render!("home.dt", req, config, interfaces);
 	}
 
 	void startNode(HTTPServerRequest req, HTTPServerResponse res)

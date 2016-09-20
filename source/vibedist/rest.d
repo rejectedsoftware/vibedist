@@ -10,9 +10,9 @@ module vibedist.rest;
 import vibedist.controller;
 import vibedist.engine;
 
-import vibe.http.rest;
+import vibe.web.rest;
 import vibe.http.server;
-import vibe.stream.ssl;
+import vibe.stream.tls;
 
 
 interface VibeDistNodeAPI {
@@ -38,11 +38,11 @@ class VibeDistNodeAPIImpl : VibeDistNodeAPI
 		Config cfg;
 		m_ctrl.getConfig(cfg);
 
-		SSLContext ssl_context; // TODO: add proper support
+		TLSContext ssl_context; // TODO: add proper support
 
 		foreach (intf; g_interfaces) {
 			auto s = intf.settings;
-			if (s.hostName != host_name || s.port != port || s.sslContext !is ssl_context)
+			if (s.hostName != host_name || s.port != port || s.tlsContext !is ssl_context)
 				continue;
 
 			foreach (n; intf.nodes) {
@@ -58,7 +58,7 @@ class VibeDistNodeAPIImpl : VibeDistNodeAPI
 		settings.hostName = host_name;
 		settings.port = port;
 		settings.bindAddresses = cfg.publicInterfaces;
-		settings.sslContext = ssl_context;
+		settings.tlsContext = ssl_context;
 
 		auto intf = new PublicInterface;
 		intf.settings = settings;
